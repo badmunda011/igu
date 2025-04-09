@@ -1,10 +1,11 @@
 import asyncio
 import logging
+import os
 from instagrapi import Client
 from pyrogram import Client as TgClient, filters
 from pyrogram.types import Message
 
-# Logging setup to capture errors
+# Logging setup
 logging.basicConfig(level=logging.INFO)
 
 # Instagram Credentials
@@ -18,14 +19,29 @@ TELEGRAM_API_HASH = "b35b715fe8dc0a58e8048988286fc5b6"
 # Initialize Instagram Client
 cl = Client()
 
-try:
-    cl.load_settings("ig_session.json")  # Load saved session
-    cl.login(IG_USERNAME, IG_PASSWORD)
-    cl.dump_settings("ig_session.json")  # Save session after login
-    logging.info("✅ Instagram login successful!")
-except Exception as e:
-    logging.error(f"❌ Instagram login failed! Error: {e}")
-    exit()
+# Check if session file exists
+session_file = "ig_session.json"
+if os.path.exists(session_file):
+    try:
+        cl.load_settings(session_file)
+        cl.login(IG_USERNAME, IG_PASSWORD)
+        logging.info("✅ Logged in using existing session!")
+    except Exception as e:
+        logging.error(f"⚠️ Session file might be corrupted! Error: {e}")
+        os.remove(session_file)  # Delete the corrupt session file
+        logging.info("🗑️ Deleted old session file. Logging in again...")
+        cl.login(IG_USERNAME, IG_PASSWORD)
+        cl.dump_settings(session_file)
+        logging.info("✅ New session created and saved!")
+else:
+    try:
+        logging.info("🔑 Session file not found. Logging in...")
+        cl.login(IG_USERNAME, IG_PASSWORD)
+        cl.dump_settings(session_file)
+        logging.info("✅ New session created and saved!")
+    except Exception as e:
+        logging.error(f"❌ Instagram login failed! Error: {e}")
+        exit()
 
 # Initialize Telegram Client (UserBot Session)
 bot = TgClient("IgUserbot", api_id=TELEGRAM_API_ID, api_hash=TELEGRAM_API_HASH)
