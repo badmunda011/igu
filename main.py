@@ -4,8 +4,8 @@ from pyrogram import Client as TgClient, filters
 from pyrogram.types import Message
 
 # Instagram Credentials
-IG_USERNAME = "your_ig_username"
-IG_PASSWORD = "your_ig_password"
+IG_USERNAME = "ig_ucbot"
+IG_PASSWORD = "warval50"
 
 # Telegram Bot Token
 TELEGRAM_API_ID = 25742938 # Replace with your API ID
