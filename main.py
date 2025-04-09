@@ -7,21 +7,29 @@ from pyrogram.types import Message
 IG_USERNAME = "ig_ucbot"
 IG_PASSWORD = "warval50"
 
+# Telegram API Credentials
 # Telegram Bot Token
 TELEGRAM_API_ID = 25742938 # Replace with your API ID
 TELEGRAM_API_HASH = "b35b715fe8dc0a58e8048988286fc5b6"
-TELEGRAM_BOT_TOKEN = "8141113707:AAHZ1kCtvjlgGOSoCm2qdqBb9Kkqas6_9HY"
+
 
 # Initialize Instagram Client
 cl = Client()
-cl.login(IG_USERNAME, IG_PASSWORD)
 
-# Initialize Telegram Bot
-bot = TgClient("IgUserbot", api_id=TELEGRAM_API_ID, api_hash=TELEGRAM_API_HASH, bot_token=TELEGRAM_BOT_TOKEN)
+try:
+    cl.load_settings("ig_session.json")  # Load saved session
+    cl.login(IG_USERNAME, IG_PASSWORD)
+    cl.dump_settings("ig_session.json")  # Save session after login
+except Exception:
+    print("❌ Instagram login failed! Check credentials or session.")
+    exit()
+
+# Initialize Telegram Client (UserBot Session)
+bot = TgClient("IgUserbot", api_id=TELEGRAM_API_ID, api_hash=TELEGRAM_API_HASH)
 
 @bot.on_message(filters.command("ping"))
 async def ping_command(_, message: Message):
-    await message.reply_text("✅ Instagram Bot is Running!")
+    await message.reply_text("✅ Instagram UserBot is Running!")
 
 @bot.on_message(filters.command("stats"))
 async def stats_command(_, message: Message):
@@ -78,5 +86,5 @@ async def unfollow_command(_, message: Message):
     except Exception as e:
         await message.reply_text(f"❌ Error: {str(e)}")
 
-# Start Telegram Bot
+# Start the Telegram UserBot
 bot.run()
