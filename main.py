@@ -8,9 +8,9 @@ IG_USERNAME = "your_ig_username"
 IG_PASSWORD = "your_ig_password"
 
 # Telegram Bot Token
-TELEGRAM_API_ID = 123456  # Replace with your API ID
-TELEGRAM_API_HASH = "your_api_hash"
-TELEGRAM_BOT_TOKEN = "your_bot_token"
+TELEGRAM_API_ID = 25742938 # Replace with your API ID
+TELEGRAM_API_HASH = "b35b715fe8dc0a58e8048988286fc5b6"
+TELEGRAM_BOT_TOKEN = "8141113707:AAHZ1kCtvjlgGOSoCm2qdqBb9Kkqas6_9HY"
 
 # Initialize Instagram Client
 cl = Client()
